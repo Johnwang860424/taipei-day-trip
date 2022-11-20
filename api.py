@@ -1,6 +1,6 @@
-from flask import Flask
 from flask import jsonify
 from flask import request
+from flask import Blueprint
 from mysql.connector.pooling import MySQLConnectionPool
 from data.password import password
 
@@ -12,10 +12,10 @@ connection = MySQLConnectionPool(user="root",
                     pool_name = "api",
                     pool_size=1)
 
-app = Flask(__name__)
+app2 = Blueprint("app2", __name__)
     
 # 取得景點資料列表
-@app.route("/api/attractions")
+@app2.route("/api/attractions")
 def attractions():
     if request.args.get("page") and request.args.get("keyword"):
         try:
@@ -124,7 +124,7 @@ def attractions():
                     "message": "Without query string"}), 400
 
 # 根據景點編號取得景點資料
-@app.route("/api/attraction/<attractionId>", methods=["GET"])
+@app2.route("/api/attraction/<attractionId>", methods=["GET"])
 def attraction(attractionId):
     try:
         attraction_connection = connection.get_connection()
@@ -160,7 +160,7 @@ def attraction(attractionId):
         attraction_connection.close()
     
 # 取得所有的景點分類名稱列表
-@app.route("/api/categories", methods=["GET"])
+@app2.route("/api/categories", methods=["GET"])
 def category():
     if not request.query_string:
         try:
@@ -180,6 +180,6 @@ def category():
         
 
 if __name__ == "__main__":
-    app.config["JSON_AS_ASCII"] = False
-    app.config["JSON_SORT_KEYS"] = False
-    app.run(host="0.0.0.0", port=3000)
+    app2.config["JSON_AS_ASCII"] = False
+    app2.config["JSON_SORT_KEYS"] = False
+    app2.run(host="0.0.0.0", port=3000)

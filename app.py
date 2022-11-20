@@ -1,4 +1,6 @@
 from flask import *
+from api import app2
+
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
@@ -17,4 +19,5 @@ def booking():
 def thankyou():
 	return render_template("thankyou.html")
 
+app.register_blueprint(app2)
 app.run(port=3000)
