@@ -62,7 +62,7 @@ def attractions():
                         "mrt": attractions_result[item][6],
                         "lat": attractions_result[item][7],
                         "lng": attractions_result[item][8],
-                        "img": attractions_result[item][9].split(',')
+                        "images": attractions_result[item][9].split(',')
                         } for item in range(length)]
             })
     elif request.args.get("page"):
@@ -105,7 +105,7 @@ def attractions():
                         "mrt": attractions_result[item][6],
                         "lat": attractions_result[item][7],
                         "lng": attractions_result[item][8],
-                        "img": attractions_result[item][9].split(",")
+                        "images": attractions_result[item][9].split(",")
                         } for item in range(length)]
             })
     return jsonify({"error": True,
