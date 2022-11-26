@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="data:," />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css')}}"
+    />
+    <title>台北一日遊</title>
+  </head>
+  <body>
+    <header>
+      <div class="bar">
+        <hgroup>
+          <h1>台北一日遊</h1>
+          <h4 class="hgroup-title-1">預定行程</h4>
+          <h4 class="hgroup-title-2">登入/註冊</h4>
+        </hgroup>
+      </div>
+    </header>
+    <div class="background">
+      <nav>
+        <div class="nav-title">輕鬆享受台北一日悠閒</div>
+        <div class="nav-text">探索每個角落，體驗城市的深度旅遊行程</div>
+        <div class="nav-search">
+          <input
+            class="nav-search--input"
+            type="text"
+            onclick="insertName()"
+            placeholder="輸入景點名稱查詢"
+          />
+          <div class="nav-container">
+            <div class="nav-list"></div>
+          </div>
+          <button onclick="search()" class="nav-search--button">
+            <img
+              src="{{url_for('static', filename='img/icon_search.png')}}"
+              style="height: 30px"
+            />
+          </button>
+        </div>
+      </nav>
+    </div>
+
+    <main>
+      <!-- <div class="attractions-block">
+        <div class="attractions-image">
+          <div class="attractions-name">
+            <span class="attractions-text"></span>
+          </div>
+        </div>
+        <div class="attractions-class">
+          <span class="attractions-mrt"></span>
+          <span class="attractions-cat"></span>
+        </div>
+      </div> -->
+    </main>
+    <footer>
+      <div class="footer-text">COPYRIGHT © 2021 台北一日遊</div>
+    </footer>
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/index.js')}}"
+    ></script>
+  </body>
+</html>

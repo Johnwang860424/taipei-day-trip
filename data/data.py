@@ -30,13 +30,15 @@ cursor.execute("CREATE TABLE IF NOT EXISTS category(\
                                             category VARCHAR(12) UNIQUE);")
 cursor.execute("ALTER TABLE attraction ADD FOREIGN KEY(category) REFERENCES category(cat_id) ON UPDATE CASCADE;")
 cursor.execute("CREATE TABLE IF NOT EXISTS image(\
+                                            `order` INT NOT NULL AUTO_INCREMENT,\
                                             id INT,\
                                             image VARCHAR(120),\
-                                            PRIMARY KEY(id, image),\
+                                            PRIMARY KEY(`order`, id),\
                                             FOREIGN KEY(id) REFERENCES attraction(id) ON DELETE CASCADE);")
+cursor.execute("ALTER TABLE image MODIFY `order` INT NOT NULL AUTO_INCREMENT AFTER id;")
 
 # Get data of taipei-attractions
-with open("../data/taipei-attractions.json", "r", encoding="utf-8") as f:
+with open("data\\taipei-attractions.json", "r", encoding="utf-8") as f:
     data = json.loads(f.read())
     # data = json.load(f) 方法二
 
@@ -51,7 +53,7 @@ for item in data["result"]["results"]:
       WHERE id = %s")
     cursor.execute(update_attraction_category, (item["CAT"], item["_id"]))
     for item["file"] in re.finditer(r"(http(s?):)([/|.|\w|\s-])*\.(?:jpg)", item["file"], flags=re.IGNORECASE):
-        insert_image = ("INSERT IGNORE INTO image(id, image) VALUES(%s, %s)")
+        insert_image = ("INSERT IGNORE INTO image(id,image) VALUES(%s, %s)")
         cursor.execute(insert_image, (item["_id"], item["file"].group()))
         
 # Reset the cat_id
