@@ -10,7 +10,7 @@ connection = MySQLConnectionPool(user="root",
                     port="3306",
                     database="taipei_day_trip",
                     pool_name = "api",
-                    pool_size=1)
+                    pool_size=4)
 
 app2 = Blueprint("app2", __name__)
     
