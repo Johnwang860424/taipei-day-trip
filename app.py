@@ -1,7 +1,10 @@
 from flask import *
-app=Flask(__name__)
+from api import app2
+
+app=Flask(__name__, static_folder="static", static_url_path="/static")
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
+app.config["JSON_SORT_KEYS"] = False
 
 # Pages
 @app.route("/")
@@ -17,4 +20,6 @@ def booking():
 def thankyou():
 	return render_template("thankyou.html")
 
-app.run(port=3000)
+if __name__ == '__main__':
+	app.register_blueprint(app2)
+	app.run(host="0.0.0.0", port=3000, debug=True)

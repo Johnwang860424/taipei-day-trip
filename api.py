@@ -1,6 +1,6 @@
-from flask import Flask
 from flask import jsonify
 from flask import request
+from flask import Blueprint
 from mysql.connector.pooling import MySQLConnectionPool
 from data.password import password
 
@@ -10,39 +10,30 @@ connection = MySQLConnectionPool(user="root",
                     port="3306",
                     database="taipei_day_trip",
                     pool_name = "api",
-                    pool_size=1)
+                    pool_size=4)
 
-app = Flask(__name__)
+app2 = Blueprint("app2", __name__)
     
 # 取得景點資料列表
-@app.route("/api/attractions")
+@app2.route("/api/attractions")
 def attractions():
     if request.args.get("page") and request.args.get("keyword"):
         try:
             attractions_connection = connection.get_connection()
             with attractions_connection.cursor() as cursor:
                 # query attractions
-                attractions_query = ("SELECT attraction.id, name, category.category, description, address, transport, mrt, lat, lng\
+                cursor.execute('SET SESSION group_concat_max_len = 5000')
+                attractions_query = ("SELECT attraction.id, name, category.category, description, address, transport, mrt, lat, lng, GROUP_CONCAT(image separator ',')\
                 FROM attraction\
                 JOIN category ON attraction.category = category.cat_id\
+                JOIN image ON attraction.id = image.id \
                 WHERE category.category = %s \
                 OR name LIKE %s \
+                GROUP BY id \
                 ORDER BY id\
-                LIMIT %s, 12")
+                LIMIT %s, 13")
                 cursor.execute(attractions_query, (request.args.get("keyword"), f"%{request.args.get('keyword')}%", int(request.args.get("page"))*12))
                 attractions_result = cursor.fetchall()
-                # query images
-                list_of_ids = tuple(id[0] for id in attractions_result)
-                format_strings = ','.join(['%s'] * len(list_of_ids))
-                cursor.execute("SELECT id, image FROM image WHERE id IN (%s)" % format_strings, list_of_ids)
-                image_result = cursor.fetchall()
-                # query amount of attractions
-                cursor.execute("SELECT COUNT(id) \
-                                FROM attraction \
-                                JOIN category ON attraction.category = category.cat_id \
-                                WHERE category.category = %s \
-                                OR name LIKE %s", (request.args.get("keyword"), f"%{request.args.get('keyword')}%"))
-                amount = cursor.fetchone()
         except:
             if not attractions_result:
                 return jsonify({"nextPage": None,
@@ -57,42 +48,38 @@ def attractions():
                             "message": "Unexpected Error"}), 500
         finally:
             attractions_connection.close()
-        page = int(request.args.get("page"))+1 if (int(request.args.get("page"))+1) * 12 < int(amount[0]) else None
+        page = int(request.args.get("page"))+1 if 12 < len(attractions_result) else None
+        length = 12 if page else len(attractions_result)
         return jsonify({
             "nextPage": page,
                         "data": [{
-                        "id": item[0],
-                        "name": item[1],
-                        "category": item[2],
-                        "description": item[3],
-                        "address": item[4],
-                        "transport": item[5],
-                        "mrt": item[6],
-                        "lat": item[7],
-                        "lng": item[8],
-                        "img": [photo[1] for photo in image_result if photo[0] == item[0]]
-                        } for item in attractions_result]
+                        "id": attractions_result[item][0],
+                        "name": attractions_result[item][1],
+                        "category": attractions_result[item][2],
+                        "description": attractions_result[item][3],
+                        "address": attractions_result[item][4],
+                        "transport": attractions_result[item][5],
+                        "mrt": attractions_result[item][6],
+                        "lat": attractions_result[item][7],
+                        "lng": attractions_result[item][8],
+                        "images": attractions_result[item][9].split(',')
+                        } for item in range(length)]
             })
     elif request.args.get("page"):
         try:
             attractions_connection = connection.get_connection()
             with attractions_connection.cursor() as cursor:
                 # query attractions
-                attractions_query = ("SELECT attraction.id, name, category.category, description, address, transport, mrt, lat, lng\
-                FROM attraction\
-                JOIN category ON attraction.category = category.cat_id\
-                ORDER BY id\
-                LIMIT %s, 12")
+                cursor.execute('SET SESSION group_concat_max_len = 5000')
+                attractions_query = ("SELECT attraction.id, name, category.category, description, address, transport, mrt, lat, lng, GROUP_CONCAT(image separator ',') \
+                FROM attraction \
+                JOIN category ON attraction.category = category.cat_id \
+                JOIN image ON attraction.id = image.id \
+                GROUP BY id\
+                ORDER BY id \
+                LIMIT %s, 13")
                 cursor.execute(attractions_query, (int(request.args.get("page"))*12,))
                 attractions_result = cursor.fetchall()
-                # query images
-                list_of_ids = tuple(id[0] for id in attractions_result)
-                format_strings = ','.join(['%s'] * len(list_of_ids))
-                cursor.execute("SELECT id, image FROM image WHERE id IN (%s)" % format_strings, list_of_ids)
-                image_result = cursor.fetchall()
-                # query amount of attractions
-                cursor.execute("SELECT COUNT(id) FROM attraction")
-                amount = cursor.fetchone()
         except:
             if not attractions_result:
                 return jsonify({"nextPage": None,
@@ -104,35 +91,36 @@ def attractions():
                             "message": "Unexpected Error"}), 500
         finally:
             attractions_connection.close()
-        page = int(request.args.get("page"))+1 if (int(request.args.get("page"))+1) * 12 < int(amount[0]) else None
+        page = int(request.args.get("page"))+1 if 12 < len(attractions_result) else None
+        length = 12 if page else len(attractions_result)
         return jsonify({
             "nextPage": page,
                         "data": [{
-                        "id": item[0],
-                        "name": item[1],
-                        "category": item[2],
-                        "description": item[3],
-                        "address": item[4],
-                        "transport": item[5],
-                        "mrt": item[6],
-                        "lat": item[7],
-                        "lng": item[8],
-                        "img": [photo[1] for photo in image_result if photo[0] == item[0]]
-                        } for item in attractions_result]
+                        "id": attractions_result[item][0],
+                        "name": attractions_result[item][1],
+                        "category": attractions_result[item][2],
+                        "description": attractions_result[item][3],
+                        "address": attractions_result[item][4],
+                        "transport": attractions_result[item][5],
+                        "mrt": attractions_result[item][6],
+                        "lat": attractions_result[item][7],
+                        "lng": attractions_result[item][8],
+                        "images": attractions_result[item][9].split(",")
+                        } for item in range(length)]
             })
     return jsonify({"error": True,
                     "message": "Without query string"}), 400
 
 # 根據景點編號取得景點資料
-@app.route("/api/attraction/<attractionId>", methods=["GET"])
+@app2.route("/api/attraction/<attractionId>", methods=["GET"])
 def attraction(attractionId):
     try:
         attraction_connection = connection.get_connection()
         with attraction_connection.cursor() as cursor:
-            attraction_query = ("SELECT attraction.id, name, category.category, description, address, transport, mrt, lat, lng, image\
-            FROM attraction\
-            JOIN category ON attraction.category = category.cat_id\
-            JOIN image ON attraction.id = image.id\
+            attraction_query = ("SELECT attraction.id, name, category.category, description, address, transport, mrt, lat, lng, GROUP_CONCAT(image separator ',') \
+            FROM attraction \
+            JOIN category ON attraction.category = category.cat_id \
+            JOIN image ON attraction.id = image.id \
             WHERE attraction.id = %s")
             cursor.execute(attraction_query, (attractionId,))
             data = cursor.fetchall()
@@ -146,7 +134,7 @@ def attraction(attractionId):
                         "mrt": data[0][6],
                         "lat": data[0][7],
                         "lng": data[0][8],
-                        "images": [item[-1] for item in data]}})
+                        "images": data[0][9].split(",")}})
     except:
         if attractionId.isnumeric():
             return jsonify({"error": True,
@@ -160,7 +148,7 @@ def attraction(attractionId):
         attraction_connection.close()
     
 # 取得所有的景點分類名稱列表
-@app.route("/api/categories", methods=["GET"])
+@app2.route("/api/categories", methods=["GET"])
 def category():
     if not request.query_string:
         try:
@@ -177,9 +165,3 @@ def category():
     elif request.query_string:
         return jsonify({"error": True,
                         "message": "Do not input any query parameters"}), 500
-        
-
-if __name__ == "__main__":
-    app.config["JSON_AS_ASCII"] = False
-    app.config["JSON_SORT_KEYS"] = False
-    app.run(host="0.0.0.0", port=3000)
