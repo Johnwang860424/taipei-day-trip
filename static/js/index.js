@@ -4,10 +4,19 @@ let inputContent = document.querySelector(".nav-search--input");
 let container = document.querySelector(".nav-container");
 let isLoading = false;
 let keyword;
+const backToTopButton = document.querySelector(".back-to-top");
 
 window.addEventListener("load", function () {
   data(`${url}/api/categories`, categoryList);
 });
+data(`${url}/api/attractions?page=0`, mainContent);
+
+let goToTop = () => {
+  document.body.scrollIntoView({
+    behavior: "smooth",
+  });
+};
+backToTopButton.addEventListener("click", goToTop);
 
 async function data(url, func) {
   try {
@@ -22,13 +31,13 @@ async function data(url, func) {
 }
 
 function mainContent(data) {
-  // if (isLoading) {
-  result = data.data;
-  page = data.nextPage;
-  let content = document.getElementsByTagName("main")[0];
-  if (result.length !== 0) {
-    for (let index = 0; index < data.data.length; index++) {
-      let code = `<div class="attractions-block">
+  if (isLoading) {
+    result = data.data;
+    page = data.nextPage;
+    let content = document.getElementsByTagName("main")[0];
+    if (result.length !== 0) {
+      for (let index = 0; index < data.data.length; index++) {
+        let code = `<div class="attractions-block">
                   <div class="attractions-image" style= background-image:url("${result[index].images[0]}")>
                     <div class="attractions-name">
                       <span class="attractions-text">${result[index].name}</span>
@@ -39,14 +48,15 @@ function mainContent(data) {
                     <span class="attractions-cat">${result[index].category}</span>
                   </div>
                 </div>`;
+        content.insertAdjacentHTML("beforeend", code);
+      }
+    } else {
+      let code = `<span class="error">結果不存在<span>`;
       content.insertAdjacentHTML("beforeend", code);
     }
-  } else {
-    let code = `<span class="error">結果不存在<span>`;
-    content.insertAdjacentHTML("beforeend", code);
+    isLoading = false;
   }
 }
-// }
 
 function categoryList(data) {
   for (let index = 0; index < data.data.length; index++) {
@@ -82,19 +92,22 @@ function search() {
 }
 
 // Elements
-const root = document.querySelector("footer");
+const listEnd = document.querySelector("footer");
 
 // Interception Handler
 const callback = ([entry], observer) => {
-  if (entry.isIntersecting && !isLoading && page != null && !keyword) {
+  if (entry.isIntersecting && page != null && !isLoading && !keyword) {
     data(`${url}/api/attractions?page=${page}`, mainContent);
-  } else if (page != null && !isLoading && keyword) {
+  } else if (entry.isIntersecting && page !== null && !isLoading && keyword) {
     data(`${url}/api/attractions?page=${page}&keyword=${keyword}`, mainContent);
   }
 };
 
-// Observe the end of the list
-const observer = new IntersectionObserver(callback, {
+const options = {
+  rootMargin: "0px",
   threshold: 0.1,
-});
-observer.observe(root);
+};
+
+// Observe the end of the list
+const observer = new IntersectionObserver(callback, options);
+observer.observe(listEnd);

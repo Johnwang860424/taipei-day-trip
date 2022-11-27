@@ -22,11 +22,12 @@ hgroup {
   grid-template-columns: 12.5% auto 7% 6.75%;
   align-items: center;
 }
-hgroup h1 {
+.back-to-top {
   color: #448899;
   font-size: 30px;
   grid-column: 1 / span 1;
   margin: 0;
+  cursor: pointer;
 }
 .hgroup-title-1 {
   color: #666666;
