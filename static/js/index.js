@@ -18,7 +18,6 @@ async function data(url, func) {
     const response = await fetch(url);
     const res = await response.json();
     func(res);
-    isLoading = false;
   } catch (error) {
     console.log(error);
   }
@@ -95,11 +94,19 @@ const listEnd = document.querySelector("footer");
 
 // Interception Handler
 const callback = ([entry], observer) => {
-  if (entry.isIntersecting && page != null && !isLoading && !keyword) {
-    data(`${url}/api/attractions?page=${page}`, mainContent);
-  } else if (entry.isIntersecting && page !== null && !isLoading && keyword) {
+  if (entry.isIntersecting && page != null && !isLoading) {
+    if (!keyword) {
+      data(`${url}/api/attractions?page=${page}`, mainContent);
+    }
+  } else if (keyword) {
     data(`${url}/api/attractions?page=${page}&keyword=${keyword}`, mainContent);
   }
+
+  // if (entry.isIntersecting && page != null && !isLoading && !keyword) {
+  //   data(`${url}/api/attractions?page=${page}`, mainContent);
+  // } else if (entry.isIntersecting && page !== null && !isLoading && keyword) {
+  //   data(`${url}/api/attractions?page=${page}&keyword=${keyword}`, mainContent);
+  // }
 };
 
 const options = {
