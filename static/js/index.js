@@ -25,13 +25,12 @@ async function data(url, func) {
 
 // 渲染主畫面內容
 function mainContent(data) {
-  if (isLoading) {
-    result = data.data;
-    page = data.nextPage;
-    const content = document.getElementsByTagName("main")[0];
-    if (result.length !== 0) {
-      for (let index = 0; index < data.data.length; index++) {
-        let code = `<a class="attractions-block" href="${url}attraction/${result[index].id}">
+  result = data.data;
+  page = data.nextPage;
+  const content = document.getElementsByTagName("main")[0];
+  if (result.length !== 0) {
+    for (let index = 0; index < data.data.length; index++) {
+      let code = `<a class="attractions-block" href="${url}attraction/${result[index].id}">
                   <div class="attractions-image" style= background-image:url("${result[index].images[0]}")>
                     <div class="attractions-name">
                       <span class="attractions-text">${result[index].name}</span>
@@ -42,14 +41,13 @@ function mainContent(data) {
                     <span class="attractions-cat">${result[index].category}</span>
                   </div>
                 </a>`;
-        content.insertAdjacentHTML("beforeend", code);
-      }
-    } else {
-      let code = `<span class="error">結果不存在<span>`;
       content.insertAdjacentHTML("beforeend", code);
     }
-    isLoading = false;
+  } else {
+    let code = `<span class="error">結果不存在<span>`;
+    content.insertAdjacentHTML("beforeend", code);
   }
+  isLoading = false;
 }
 
 // 渲染景點類別
@@ -97,16 +95,13 @@ const callback = ([entry], observer) => {
   if (entry.isIntersecting && page != null && !isLoading) {
     if (!keyword) {
       data(`${url}/api/attractions?page=${page}`, mainContent);
+    } else if (keyword) {
+      data(
+        `${url}/api/attractions?page=${page}&keyword=${keyword}`,
+        mainContent
+      );
     }
-  } else if (keyword) {
-    data(`${url}/api/attractions?page=${page}&keyword=${keyword}`, mainContent);
   }
-
-  // if (entry.isIntersecting && page != null && !isLoading && !keyword) {
-  //   data(`${url}/api/attractions?page=${page}`, mainContent);
-  // } else if (entry.isIntersecting && page !== null && !isLoading && keyword) {
-  //   data(`${url}/api/attractions?page=${page}&keyword=${keyword}`, mainContent);
-  // }
 };
 
 const options = {

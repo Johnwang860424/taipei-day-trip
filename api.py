@@ -117,6 +117,7 @@ def attraction(attractionId):
     try:
         attraction_connection = connection.get_connection()
         with attraction_connection.cursor() as cursor:
+            cursor.execute('SET SESSION group_concat_max_len = 5000')
             attraction_query = ("SELECT attraction.id, name, category.category, description, address, transport, mrt, lat, lng, GROUP_CONCAT(image separator ',') \
             FROM attraction \
             JOIN category ON attraction.category = category.cat_id \
