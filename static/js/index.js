@@ -18,6 +18,7 @@ async function data(url, func) {
     const response = await fetch(url);
     const res = await response.json();
     func(res);
+    isLoading = false;
   } catch (error) {
     console.log(error);
   }
@@ -47,7 +48,6 @@ function mainContent(data) {
     let code = `<span class="error">結果不存在<span>`;
     content.insertAdjacentHTML("beforeend", code);
   }
-  isLoading = false;
 }
 
 // 渲染景點類別
@@ -92,6 +92,7 @@ const listEnd = document.querySelector("footer");
 
 // Interception Handler
 const callback = ([entry], observer) => {
+  console.log(entry.isIntersecting, page, isLoading);
   if (entry.isIntersecting && page != null && !isLoading) {
     if (!keyword) {
       data(`${url}/api/attractions?page=${page}`, mainContent);

@@ -1,11 +1,14 @@
+from dotenv import load_dotenv
 from flask import jsonify
 from flask import request
 from flask import Blueprint
 from mysql.connector.pooling import MySQLConnectionPool
-from data.password import password
+import os
+
+load_dotenv()
 
 connection = MySQLConnectionPool(user="root",
-                    password=password,
+                    password=os.getenv("PASSWORD"),
                     host="localhost",
                     port="3306",
                     database="taipei_day_trip",

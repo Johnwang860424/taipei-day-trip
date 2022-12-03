@@ -72,8 +72,8 @@ function currentSlide(number) {
 
 function showSlides(number) {
   let index;
-  let slides = document.getElementsByClassName("mySlides");
-  let dots = document.getElementsByClassName("dot");
+  const slides = document.getElementsByClassName("mySlides");
+  const dots = document.getElementsByClassName("dot");
   if (number > slides.length) {
     slideIndex = 1;
   }
