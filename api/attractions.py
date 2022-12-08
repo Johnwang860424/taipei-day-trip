@@ -15,11 +15,11 @@ connection = MySQLConnectionPool(user="root",
                     pool_name = "api",
                     pool_size=4)
 
-app2 = Blueprint("app2", __name__)
+attractions = Blueprint("attractions", __name__)
     
 # 取得景點資料列表
-@app2.route("/api/attractions")
-def attractions():
+@attractions.route("/api/attractions")
+def attraction():
     if request.args.get("page") and request.args.get("keyword"):
         try:
             attractions_connection = connection.get_connection()
@@ -115,8 +115,8 @@ def attractions():
                     "message": "Without query string"}), 400
 
 # 根據景點編號取得景點資料
-@app2.route("/api/attraction/<attractionId>", methods=["GET"])
-def attraction(attractionId):
+@attractions.route("/api/attraction/<attractionId>", methods=["GET"])
+def tourist_spots(attractionId):
     try:
         attraction_connection = connection.get_connection()
         with attraction_connection.cursor() as cursor:
@@ -152,7 +152,7 @@ def attraction(attractionId):
         attraction_connection.close()
     
 # 取得所有的景點分類名稱列表
-@app2.route("/api/categories", methods=["GET"])
+@attractions.route("/api/categories", methods=["GET"])
 def category():
     if not request.query_string:
         try:

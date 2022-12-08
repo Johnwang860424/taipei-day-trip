@@ -1,5 +1,5 @@
 from flask import *
-from api import app2
+import api
 
 app=Flask(__name__, static_folder="static", static_url_path="/static")
 app.config["JSON_AS_ASCII"]=False
@@ -21,5 +21,6 @@ def thankyou():
 	return render_template("thankyou.html")
 
 if __name__ == '__main__':
-	app.register_blueprint(app2)
-	app.run(host="0.0.0.0", port=3000)
+	app.register_blueprint(api.attractions.attractions)
+	app.register_blueprint(api.member.member)
+	app.run(host="0.0.0.0", port=3000, debug=True)
