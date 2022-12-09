@@ -1,22 +1,25 @@
+from dotenv import load_dotenv
 from flask import jsonify
 from flask import request
 from flask import Blueprint
 from mysql.connector.pooling import MySQLConnectionPool
-from data.password import password
+import os
+
+load_dotenv()
 
 connection = MySQLConnectionPool(user="root",
-                    password=password,
+                    password=os.getenv("PASSWORD"),
                     host="localhost",
                     port="3306",
                     database="taipei_day_trip",
                     pool_name = "api",
                     pool_size=4)
 
-app2 = Blueprint("app2", __name__)
+attractions = Blueprint("attractions", __name__)
     
 # 取得景點資料列表
-@app2.route("/api/attractions")
-def attractions():
+@attractions.route("/api/attractions")
+def attraction():
     if request.args.get("page") and request.args.get("keyword"):
         try:
             attractions_connection = connection.get_connection()
@@ -112,11 +115,12 @@ def attractions():
                     "message": "Without query string"}), 400
 
 # 根據景點編號取得景點資料
-@app2.route("/api/attraction/<attractionId>", methods=["GET"])
-def attraction(attractionId):
+@attractions.route("/api/attraction/<attractionId>", methods=["GET"])
+def tourist_spots(attractionId):
     try:
         attraction_connection = connection.get_connection()
         with attraction_connection.cursor() as cursor:
+            cursor.execute('SET SESSION group_concat_max_len = 5000')
             attraction_query = ("SELECT attraction.id, name, category.category, description, address, transport, mrt, lat, lng, GROUP_CONCAT(image separator ',') \
             FROM attraction \
             JOIN category ON attraction.category = category.cat_id \
@@ -148,7 +152,7 @@ def attraction(attractionId):
         attraction_connection.close()
     
 # 取得所有的景點分類名稱列表
-@app2.route("/api/categories", methods=["GET"])
+@attractions.route("/api/categories", methods=["GET"])
 def category():
     if not request.query_string:
         try:

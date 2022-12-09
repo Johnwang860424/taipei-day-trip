@@ -19,13 +19,81 @@
   </head>
   <body>
     <header class="bar">
+      <div class="dark"></div>
       <hgroup>
         <h1 class="home">
           <a href="/">台北一日遊</a>
         </h1>
         <h4 class="hgroup-title-1">預定行程</h4>
-        <h4 class="hgroup-title-2">登入/註冊</h4>
+        <h4 class="hgroup-title-2"><a onclick="login()"></a></h4>
       </hgroup>
+      <div class="signin">
+        <div class="member__title">
+          登入會員帳號
+          <img
+            class="member__close"
+            src="{{url_for('static', filename='img/icon_close.svg')}}"
+          />
+        </div>
+        <div class="member__input">
+          <input
+            id="signin__email"
+            type="email"
+            placeholder="輸入電子信箱"
+            name="email"
+            required
+          />
+          <input
+            id="signin__password"
+            type="password"
+            placeholder="輸入密碼"
+            name="password"
+            required
+          />
+          <button class="member__button">登入帳戶</button>
+        </div>
+        <div class="member__text" style="display: none; margin-bottom: 0"></div>
+        <div class="member__text">
+          還沒有帳戶？<a style="cursor: pointer">點此註冊</a>
+        </div>
+      </div>
+      <div class="signup" style="min-height: 322px">
+        <div class="member__title">
+          註冊會員帳號
+          <img
+            class="member__close"
+            src="{{url_for('static', filename='img/icon_close.svg')}}"
+          />
+        </div>
+        <div class="member__input" style="height: 218px">
+          <input
+            id="signup__name"
+            type="text"
+            placeholder="輸入姓名"
+            name="name"
+            required
+          />
+          <input
+            id="signup__email"
+            type="email"
+            placeholder="輸入電子信箱"
+            name="email"
+            required
+          />
+          <input
+            id="signup__password"
+            type="password"
+            placeholder="輸入密碼"
+            name="password"
+            required
+          />
+          <button class="member__button">註冊新帳戶</button>
+        </div>
+        <div class="member__text" style="display: none; margin-bottom: 0"></div>
+        <div class="member__text">
+          已經有帳戶了？<a style="cursor: pointer">點此登入</a>
+        </div>
+      </div>
     </header>
     <article>
       <section class="section-top">
@@ -66,7 +134,7 @@
                 <div style="margin-top: 15px">
                   導覽費用：<span class="price"></span>
                 </div>
-                <button>開始預約行程</button>
+                <button class="reserve">開始預約行程</button>
               </form>
             </div>
           </div>
