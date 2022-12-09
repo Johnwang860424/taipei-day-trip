@@ -4,8 +4,16 @@ const attractionName = document.querySelector(".section-top--right---title");
 const description = document.querySelector(".section-bottom");
 const radioBtns = document.querySelectorAll("input[name='time']");
 const result = document.querySelector(".price");
-const memberBtn = document.querySelectorAll(".member__button");
 const loginButton = document.querySelector(".hgroup-title-2 a");
+const member = document.querySelector(".signin");
+const signup = document.querySelector(".signup");
+const memberBtn = document.querySelectorAll(".member__button");
+const signinEmail = document.querySelector("#signin__email");
+const signinPassword = document.querySelector("#signin__password");
+const signupName = document.querySelector("#signup__name");
+const signupEmail = document.querySelector("#signup__email");
+const signupPassword = document.querySelector("#signup__password");
+const popupText = document.getElementsByClassName("member__text");
 let slideIndex = 1;
 
 data(url, mainContent);
@@ -181,9 +189,6 @@ async function signupMember(url, method, data, index) {
 
 // 點擊空白處消失類別、登入、註冊視窗
 document.body.addEventListener("click", function (elem) {
-  if (!container.parentNode.contains(elem.target)) {
-    container.style.display = "none";
-  }
   if (elem.target.className === "dark") {
     document.querySelector(".dark").style.display = "none";
     member.style.display = "none";
