@@ -18,7 +18,7 @@ cursor.close()
 connection.config(database="taipei_day_trip")
 connection.reconnect()
 cursor = connection.cursor()
-# Create attraction, category, image Tables
+# Create attraction, category, image, member, booking, time_price Tables
 cursor.execute("""CREATE TABLE 
                   IF NOT EXISTS attraction(
                                           id INT PRIMARY KEY,
@@ -40,14 +40,27 @@ cursor.execute("""ALTER TABLE attraction
                   ON UPDATE CASCADE;""")
 cursor.execute("""CREATE TABLE 
                   IF NOT EXISTS image(
-                                      `order` INT NOT NULL AUTO_INCREMENT,
                                       id INT,
+                                      `order` INT NOT NULL,
                                       image VARCHAR(120),
-                                      PRIMARY KEY(`order`, id),
+                                      PRIMARY KEY(id, `order`),
                                       FOREIGN KEY(id) REFERENCES attraction(id) ON DELETE CASCADE);""")
-cursor.execute("""ALTER TABLE image
-                  MODIFY `order` INT NOT NULL AUTO_INCREMENT
-                  AFTER id;""")
+cursor.execute("""CREATE TABLE
+                  IF NOT EXISTS member(
+                                       id INT AUTO_INCREMENT PRIMARY KEY,
+                                       name VARCHAR(30) NOT NULL,
+                                       email VARCHAR(254) NOT NULL UNIQUE,
+                                       password VARCHAR(300) NOT NULL);""")
+cursor.execute("""CREATE TABLE
+                  IF NOT EXISTS booking(
+                                       orderid INT AUTO_INCREMENT PRIMARY KEY,
+                                       memberid INT NOT NULL,
+                                       attractionid INT NOT NULL,
+                                       `date` DATE NOT NULL,
+                                       time VARCHAR(30) NOT NULL,
+                                       price INT NOT NULL,
+                                       FOREIGN KEY(memberid) REFERENCES member(id) ON DELETE CASCADE,
+                                       FOREIGN KEY(attractionid) REFERENCES attraction(id) ON DELETE CASCADE);""")
 
 # Get data of taipei-attractions
 with open(Path("data/taipei-attractions.json"), "r", encoding="utf-8") as f:
@@ -72,9 +85,11 @@ for item in data["result"]["results"]:
                                      SET category = (SELECT cat_id FROM category WHERE category = %s)
                                      WHERE id = %s""")
     cursor.execute(update_attraction_category, (item["CAT"], item["_id"]))
+    order = 1
     for item["file"] in re.finditer(r"(http(s?):)([/|.|\w|\s-])*\.(?:jpg)", item["file"], flags=re.IGNORECASE):
-        insert_image = ("INSERT IGNORE INTO image(id,image) VALUES(%s, %s)")
-        cursor.execute(insert_image, (item["_id"], item["file"].group()))
+        insert_image = ("INSERT IGNORE INTO image(id, `order`, image) VALUES(%s, %s, %s)")
+        cursor.execute(insert_image, (item["_id"], order, item["file"].group()))
+        order += 1
         
 # Reset the cat_id
 cursor.execute("SET @count = 0;")

@@ -12,8 +12,11 @@ connection = MySQLConnectionPool(user="root",
                     host="localhost",
                     port="3306",
                     database="taipei_day_trip",
-                    pool_name = "data",
+                    pool_name = "api",
                     pool_size=4)
 
 from data.member import SignUp
 from data.member import Signin 
+from data.attractions import Attraction
+from data.attractions import Category
+from data.booking import Booking
