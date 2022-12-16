@@ -22,7 +22,7 @@
       <div class="dark"></div>
       <hgroup>
         <h1 class="home"><a href="/">台北一日遊</a></h1>
-        <h4 class="hgroup-title-1"><a href="#">預定行程</a></h4>
+        <h4 class="hgroup-title-1"><a>預定行程</a></h4>
         <h4 class="hgroup-title-2"><a onclick="login()"></a></h4>
       </hgroup>
       <div class="signin">
@@ -109,7 +109,7 @@
           </div>
           <button onclick="search()" class="nav-search--button">
             <img
-              src="{{url_for('static', filename='img/icon_search.png')}}"
+              src="{{url_for('static', filename='img/icon_search.svg')}}"
               style="height: 30px"
             />
           </button>
@@ -135,6 +135,10 @@
     <script
       type="text/javascript"
       src="{{ url_for('static', filename='js/index.js')}}"
+    ></script>
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/validateMember.js')}}"
     ></script>
   </body>
 </html>

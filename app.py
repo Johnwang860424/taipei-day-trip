@@ -23,4 +23,5 @@ def thankyou():
 if __name__ == '__main__':
 	app.register_blueprint(api.attractions.attractions)
 	app.register_blueprint(api.member.member)
+	app.register_blueprint(api.booking.booking)
 	app.run(host="0.0.0.0", port=3000, debug=True)

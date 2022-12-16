@@ -40,6 +40,7 @@ hgroup {
 .hgroup-title-1 a {
   text-decoration: none;
   color: #666666;
+  cursor: pointer;
 }
 .hgroup-title-2 {
   color: #666666;
@@ -163,7 +164,6 @@ nav {
 
 .nav-search {
   display: flex;
-  width: 460px;
   border-radius: 5px;
   overflow: hidden;
 }
@@ -173,12 +173,13 @@ nav {
   font-size: 16px;
   border: 0;
   padding: 0 15px;
-  width: 400px;
+  width: 370px;
+  outline: none;
 }
 .nav-container {
   position: absolute;
   display: none;
-  bottom: -51px;
+  bottom: -45px;
   width: 400px;
   background: #ffffff;
   box-shadow: 0px 0px 20px #aabbcc;
@@ -208,6 +209,8 @@ nav {
   padding: 0;
   background-color: #448899;
   border: 0;
+  cursor: pointer;
+  border-radius: 0 5px 5px 0;
 }
 .nav-search--button img {
   padding: 8px 15px;
@@ -224,6 +227,7 @@ main {
   grid-template-columns: repeat(4, 270px);
   row-gap: 30px;
   column-gap: 30px;
+  min-height: calc(100vh - 110px - 54px - 320px - 104px);
 }
 .attractions-block {
   height: 242px;
@@ -295,7 +299,45 @@ footer {
   justify-self: center;
 }
 
-@media (min-width: 359px) and (max-width: 1220px) {
+@media (min-width: 600px) and (max-width: 1220px) {
+  hgroup {
+    width: 100%;
+    height: 54px;
+    grid-template-columns: 45% auto 84px 81px;
+  }
+
+  nav {
+    width: fit-content;
+    margin: auto;
+  }
+
+  .nav-search input {
+    border-radius: 5px 0 0 5px;
+  }
+
+  main {
+    width: auto;
+    row-gap: 20px;
+    column-gap: 2%;
+    grid-template-columns: repeat(2, calc(calc(322 / 360) * 50vw));
+    min-height: calc(100vh - 110px - 54px - 320px - 104px);
+  }
+  .attractions-block {
+    height: fit-content;
+  }
+  .attractions-image {
+    height: calc(calc(280 / 322) * calc(calc(322 / 360) * 50vw));
+  }
+  .attractions-name {
+    width: 100%;
+  }
+
+  .attractions-class {
+    height: 45px;
+  }
+}
+
+@media (min-width: 360px) and (max-width: 600px) {
   hgroup {
     width: 100vw;
     height: 54px;

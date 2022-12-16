@@ -15,7 +15,7 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/attraction.css')}}"
     />
-    <title>景點介紹</title>
+    <title>購物車</title>
   </head>
   <body>
     <header class="bar">
@@ -24,7 +24,7 @@
         <h1 class="home">
           <a href="/">台北一日遊</a>
         </h1>
-        <h4 class="hgroup-title-1">預定行程</h4>
+        <h4 class="hgroup-title-1"><a>預定行程</a></h4>
         <h4 class="hgroup-title-2"><a onclick="login()"></a></h4>
       </hgroup>
       <div class="signin">
@@ -109,7 +109,7 @@
               <p style="font-weight: 500">
                 以此景點為中心的一日行程，帶您探索城市角落故事
               </p>
-              <form action="">
+              <form onsubmit="return false;">
                 <div>
                   <label for="date">選擇日期：</label>
                   <input id="date" type="date" required />
@@ -156,6 +156,10 @@
     <script
       type="text/javascript"
       src="{{ url_for('static', filename='js/attraction.js')}}"
+    ></script>
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/validateMember.js')}}"
     ></script>
   </body>
 </html>
