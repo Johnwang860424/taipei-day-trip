@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="data:," />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/thankyou.css')}}"
+    />
+    <title>感謝頁</title>
+  </head>
+  <body>
+    <header class="bar">
+      <div class="dark"></div>
+      <hgroup>
+        <h1 class="home">
+          <a href="/">台北一日遊</a>
+        </h1>
+        <h4 class="hgroup-title-1"><a>預定行程</a></h4>
+        <h4 class="hgroup-title-2"><a onclick="login()"></a></h4>
+      </hgroup>
+      <div class="signin">
+        <span class="member__title">
+          登入會員帳號
+          <img
+            class="member__close"
+            src="{{url_for('static', filename='img/icon_close.svg')}}"
+          />
+        </span>
+        <div class="member__input">
+          <input
+            id="signin__email"
+            type="email"
+            placeholder="輸入電子信箱"
+            name="email"
+            required
+          />
+          <input
+            id="signin__password"
+            type="password"
+            placeholder="輸入密碼"
+            name="password"
+            required
+          />
+          <button class="member__button">登入帳戶</button>
+        </div>
+        <div class="member__text" style="display: none; margin-bottom: 0"></div>
+        <div class="member__text">
+          還沒有帳戶？<a style="cursor: pointer">點此註冊</a>
+        </div>
+      </div>
+      <div class="signup" style="min-height: 322px">
+        <div class="member__title">
+          註冊會員帳號
+          <img
+            class="member__close"
+            src="{{url_for('static', filename='img/icon_close.svg')}}"
+          />
+        </div>
+        <div class="member__input" style="height: 218px">
+          <input
+            id="signup__name"
+            type="text"
+            placeholder="輸入姓名"
+            name="name"
+            required
+          />
+          <input
+            id="signup__email"
+            type="email"
+            placeholder="輸入電子信箱"
+            name="email"
+            required
+          />
+          <input
+            id="signup__password"
+            type="password"
+            placeholder="輸入密碼"
+            name="password"
+            required
+          />
+          <button class="member__button">註冊新帳戶</button>
+        </div>
+        <div class="member__text" style="display: none; margin-bottom: 0"></div>
+        <div class="member__text">
+          已經有帳戶了？<a style="cursor: pointer">點此登入</a>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="thankyou__title">行程預定成功</div>
+      <div class="thankyou__title">您的訂單編號如下</div>
+      <div class="thankyou__title"></div>
+      <div class="thankyou__title">請記住此編號，或到會員中心查詢歷史訂單</div>
+    </main>
+    <footer>
+      <div class="footer-text">COPYRIGHT © 2021 台北一日遊</div>
+    </footer>
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/validateMember.js')}}"
+    ></script>
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/thankyou.js')}}"
+    ></script>
+  </body>
+</html>

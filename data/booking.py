@@ -4,15 +4,16 @@ class Booking:
     def get(jwt: dict):
         try:
             booking_connection = connection.get_connection()
-            with booking_connection.cursor() as cursor:
-                 booking_query = ("""SELECT attraction.id, name, address, image, orderid, date, time, price
+            with booking_connection.cursor(dictionary=True) as cursor:
+                 booking_query = ("""SELECT attraction.id, name, address, image, orderid, date, time, price, orderstatus
                                     FROM attraction
                                     JOIN image
                                     ON attraction.id = image.id
                                     AND image.order = 1
                                     JOIN booking
                                     ON attraction.id = booking.attractionid
-                                    WHERE memberid = %s;""")
+                                    WHERE memberid = %s
+                                    AND orderstatus = 0;""")
                  cursor.execute(booking_query, (jwt["id"],))
                  return cursor.fetchall()
         except Exception:
@@ -38,11 +39,16 @@ class Booking:
         try:
             with booking_connection.cursor() as cursor:
                 booking_query = ("""DELETE FROM booking
-                                    WHERE orderid = %s""")
-                cursor.execute(booking_query, (data["orderid"], ))
+                                    WHERE orderid = %s
+                                    AND memberid = %s""")
+                cursor.execute(booking_query, (data["orderid"], data["id"]))
                 booking_connection.commit()
-                return True
+                if cursor.rowcount == 1:
+                    return True
+                return False
         except Exception:
             return False
         finally:
             booking_connection.close()
+            
+            

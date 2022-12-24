@@ -1,4 +1,5 @@
 from data import *
+import datetime
 import jwt
 import datetime
 
@@ -12,15 +13,15 @@ def booking_get():
         result = Booking.get(decoded_jwt)
         if result:
             return {"data":[{"attraction": {
-                             "id": result[item][0],
-                             "name": result[item][1],
-                             "address": result[item][2],
-                             "image": result[item][3]
+                             "id": result[item]["id"],
+                             "name": result[item]["name"],
+                             "address": result[item]["address"],
+                             "image": result[item]["image"]
                              },
-                            "orderid": result[item][4],
-                            "date": result[item][5].strftime("%Y-%m-%d"),
-                            "time": result[item][6],
-                            "price": result[item][7]} for item in range(len(result))]
+                            "orderid": result[item]["orderid"],
+                            "date": result[item]["date"].strftime("%Y-%m-%d"),
+                            "time": result[item]["time"],
+                            "price": result[item]["price"]} for item in range(len(result))]
                     }, 200
         elif not result:
             return {"data": None}, 200
@@ -73,7 +74,8 @@ def booking_delete():
     encoded_jwt = request.cookies.get("token")
     try:
         decoded_jwt = jwt.decode(encoded_jwt, os.getenv("JWT_secret"), algorithms="HS256")
-        result = Booking.delete(orderid)
+        data = orderid | decoded_jwt
+        result = Booking.delete(data)
         if result:
             return {"ok": True}, 200
         elif result == False:

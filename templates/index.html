@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hant-TW">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -48,6 +48,12 @@
             name="password"
             required
           />
+          <button class="show__password" type="button">
+            <img
+              src="{{url_for('static', filename='img/eye_closed.svg')}}"
+              alt="Show Password"
+            />
+          </button>
           <button class="member__button">登入帳戶</button>
         </div>
         <div class="member__text" style="display: none; margin-bottom: 0"></div>
@@ -85,6 +91,12 @@
             name="password"
             required
           />
+          <button class="show__password" type="button">
+            <img
+              src="{{url_for('static', filename='img/eye_closed.svg')}}"
+              alt="Show Password"
+            />
+          </button>
           <button class="member__button">註冊新帳戶</button>
         </div>
         <div class="member__text" style="display: none; margin-bottom: 0"></div>
