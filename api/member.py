@@ -51,10 +51,10 @@ def auth_put():
     result = Signin.put(member_info['email'])
     if result:
         password = member_info['password']
-        if check_password_hash(result[3], password):
-            encoded_jwt = jwt.encode({"id": result[0],
-                                    "name": result[1],
-                                    "email": result[2],
+        if check_password_hash(result["password"], password):
+            encoded_jwt = jwt.encode({"id": result["id"],
+                                    "name": result["name"],
+                                    "email": result["email"],
                                     "nbf":datetime.datetime.now(tz=datetime.timezone.utc),
                                     "exp": datetime.datetime.now(tz=datetime.timezone.utc)+datetime.timedelta(days=7)},
                                     os.getenv("JWT_secret"),

@@ -21,7 +21,7 @@ class Signin:
     def put(email: str):
         try:
             signin_connection = connection.get_connection()
-            with signin_connection.cursor() as cursor:
+            with signin_connection.cursor(dictionary=True) as cursor:
                 signin_info = ("""SELECT id, name, email, password 
                                     FROM member
                                     WHERE email = %s""")

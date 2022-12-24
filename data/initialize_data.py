@@ -8,9 +8,9 @@ from pathlib import Path
 load_dotenv()
 
 connection = mysql.connector.connect(user="root",
-                                    password=os.getenv("PASSWORD"),
-                                    host="localhost",
-                                    port="3306")
+                                     password=os.getenv("PASSWORD"),
+                                     host="localhost",
+                                     port="3306")
 
 cursor = connection.cursor()
 check = cursor.execute("CREATE DATABASE IF NOT EXISTS taipei_day_trip;")
@@ -22,7 +22,7 @@ cursor = connection.cursor()
 cursor.execute("""CREATE TABLE 
                   IF NOT EXISTS attraction(
                                           id INT PRIMARY KEY,
-                                          name VARCHAR(50),
+                                          name VARCHAR(100),
                                           category INT,
                                           description VARCHAR(5100),
                                           address VARCHAR(90),
@@ -48,7 +48,7 @@ cursor.execute("""CREATE TABLE
 cursor.execute("""CREATE TABLE
                   IF NOT EXISTS member(
                                        id INT AUTO_INCREMENT PRIMARY KEY,
-                                       name VARCHAR(30) NOT NULL,
+                                       name VARCHAR(100) NOT NULL,
                                        email VARCHAR(254) NOT NULL UNIQUE,
                                        password VARCHAR(300) NOT NULL);""")
 cursor.execute("""CREATE TABLE
@@ -59,11 +59,20 @@ cursor.execute("""CREATE TABLE
                                        `date` DATE NOT NULL,
                                        time VARCHAR(30) NOT NULL,
                                        price INT NOT NULL,
+                                       orderstatus BOOLEAN DEFAULT 0,
                                        FOREIGN KEY(memberid) REFERENCES member(id) ON DELETE CASCADE,
                                        FOREIGN KEY(attractionid) REFERENCES attraction(id) ON DELETE CASCADE);""")
+cursor.execute("""CREATE TABLE
+                  IF NOT EXISTS `order`(
+                                      ordernumber VARCHAR(20),
+                                      orderid INT PRIMARY KEY,
+                                      name VARCHAR(100) NOT NULL,
+                                      email VARCHAR(254) NOT NULL,
+                                      phone VARCHAR(10) NOT NULL,
+                                      FOREIGN KEY(orderid) REFERENCES booking(orderid));""")
 
 # Get data of taipei-attractions
-with open(Path("data/taipei-attractions.json"), "r", encoding="utf-8") as f:
+with open(Path("taipei-attractions.json"), "r", encoding="utf-8") as f:
     data = json.loads(f.read())
     # data = json.load(f) 方法二
 
@@ -80,17 +89,20 @@ for item in data["result"]["results"]:
                                                           lat, 
                                                           lng) 
                                                           VALUES(%s, %s, %s, %s, %s, %s, %s, %s)""")
-    cursor.execute(insert_attraction, (item["_id"], item["name"], item["description"], item["address"], item["direction"], item["MRT"], item["latitude"], item["longitude"]))
+    cursor.execute(insert_attraction, (item["_id"], item["name"], item["description"],
+                   item["address"], item["direction"], item["MRT"], item["latitude"], item["longitude"]))
     update_attraction_category = ("""UPDATE attraction
                                      SET category = (SELECT cat_id FROM category WHERE category = %s)
                                      WHERE id = %s""")
     cursor.execute(update_attraction_category, (item["CAT"], item["_id"]))
     order = 1
     for item["file"] in re.finditer(r"(http(s?):)([/|.|\w|\s-])*\.(?:jpg)", item["file"], flags=re.IGNORECASE):
-        insert_image = ("INSERT IGNORE INTO image(id, `order`, image) VALUES(%s, %s, %s)")
-        cursor.execute(insert_image, (item["_id"], order, item["file"].group()))
+        insert_image = (
+            "INSERT IGNORE INTO image(id, `order`, image) VALUES(%s, %s, %s)")
+        cursor.execute(
+            insert_image, (item["_id"], order, item["file"].group()))
         order += 1
-        
+
 # Reset the cat_id
 cursor.execute("SET @count = 0;")
 cursor.execute("UPDATE category SET cat_id = @count:= @count + 1;")

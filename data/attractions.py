@@ -4,18 +4,19 @@ class Attraction:
     def get_attraction_page_keyword(page: int, keyword: str):
         try:
             attractions_connection = connection.get_connection()
-            with attractions_connection.cursor() as cursor:
+            with attractions_connection.cursor(dictionary=True) as cursor:
                 # query attractions
                 cursor.execute('SET SESSION group_concat_max_len = 5000')
                 attractions_query = ("""SELECT attraction.id,
                                                name,
                                                category.category,
                                                description,
-                                               address, transport,
+                                               address,
+                                               transport,
                                                mrt,
                                                lat,
                                                lng,
-                                               GROUP_CONCAT(image separator ',')
+                                               GROUP_CONCAT(image separator ',') AS images
                                         FROM attraction
                                         JOIN category ON attraction.category = category.cat_id
                                         JOIN image ON attraction.id = image.id 
@@ -34,7 +35,7 @@ class Attraction:
     def get_attraction_page(page: str):
         try:
             attractions_connection = connection.get_connection()
-            with attractions_connection.cursor() as cursor:
+            with attractions_connection.cursor(dictionary=True) as cursor:
                 # query attractions
                 cursor.execute('SET SESSION group_concat_max_len = 5000')
                 attractions_query = ("""SELECT attraction.id,
@@ -46,7 +47,7 @@ class Attraction:
                                                mrt,
                                                lat,
                                                lng,
-                                               GROUP_CONCAT(image separator ',')
+                                               GROUP_CONCAT(image separator ',') AS images
                                         FROM attraction
                                         JOIN category ON attraction.category = category.cat_id
                                         JOIN image ON attraction.id = image.id 
@@ -63,7 +64,7 @@ class Attraction:
     def get_attraction_by_id(id: str):
         try:
             attraction_connection = connection.get_connection()
-            with attraction_connection.cursor() as cursor:
+            with attraction_connection.cursor(dictionary=True) as cursor:
                 cursor.execute('SET SESSION group_concat_max_len = 5000')
                 attraction_query = ("""SELECT attraction.id,
                                               name,
@@ -74,7 +75,7 @@ class Attraction:
                                               mrt,
                                               lat,
                                               lng,
-                                              GROUP_CONCAT(image separator ',') 
+                                              GROUP_CONCAT(image separator ',') AS images
                                         FROM attraction 
                                         JOIN category ON attraction.category = category.cat_id 
                                         JOIN image ON attraction.id = image.id 
@@ -90,7 +91,7 @@ class Category:
     def get_category():
         try:
             category_connection = connection.get_connection()
-            with category_connection.cursor() as cursor:
+            with category_connection.cursor(dictionary=True) as cursor:
                 cursor.execute("SELECT category FROM category ORDER BY cat_id;")
                 return cursor.fetchall()
         except Exception:

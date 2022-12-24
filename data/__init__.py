@@ -20,3 +20,4 @@ from data.member import Signin
 from data.attractions import Attraction
 from data.attractions import Category
 from data.booking import Booking
+from data.order import Order

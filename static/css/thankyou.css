@@ -92,12 +92,6 @@ hgroup {
   right: 20px;
   top: 20px;
 }
-.error__message {
-  font-weight: 700;
-  font-size: 16px;
-  margin: 7% auto;
-  text-align: center;
-}
 .member__input {
   display: flex;
   height: 161px;
@@ -144,123 +138,37 @@ hgroup {
   height: 100vh;
 }
 
-article {
+main {
   width: 1200px;
   min-height: calc(100vh - 55px - 104px);
   margin: auto;
   padding: 55px 0 104px;
 }
-.container {
-  display: flex;
-  flex-direction: column;
-}
 
-.welcome__text {
+.thankyou__title {
   font-size: 19px;
+  text-align: center;
   display: block;
-  margin-top: 46px;
+  margin: 46px auto 0;
   color: #666666;
   font-weight: 700;
   padding: 0 8%;
 }
-
-.box {
-  height: fit-content;
-  border-bottom: 1px solid #e8e8e8;
-  padding: 44px 8% 40px;
-  color: #666666;
-  font-weight: 700;
+main :nth-child(2) {
+  margin-top: 10px;
 }
-.box__title {
-  font-size: 19px;
-  display: block;
-  margin-bottom: 35px;
-}
-
-.attraction {
-  width: 98%;
-  margin: 0 auto;
-  display: flex;
-  position: relative;
-}
-.attraction__photo {
-  max-height: 200px;
-  object-fit: cover;
-  aspect-ratio: 16/12;
-}
-.attraction__infor {
-  margin-left: 3%;
-  display: flex;
-  flex-direction: column;
-}
-.infor__title {
-  color: #448899;
-  margin-bottom: 20px;
-}
-.information {
+main :nth-child(3) {
+  margin-top: 50px;
   font-weight: 500;
 }
-.attraction__delete {
-  cursor: pointer;
-  height: fit-content;
-  position: absolute;
-  right: 0;
-}
-.attraction__delete:hover {
-  transform: scale(1.2, 1.2);
-}
-
-.infor__input {
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
+main :nth-child(4) {
+  margin-top: 50px;
   font-weight: 500;
-}
-#contact_name,
-#contact_email,
-#phone {
-  font-family: "Noto Sans TC";
-  height: 14px;
-  width: 178px;
-  padding: 10px;
-  font-weight: 500;
-  font-size: 16px;
-  border: 1px solid #e8e8e8;
-  border-radius: 5px;
-  outline: none;
-}
-.tpfield {
-  height: 24px;
-  width: 178px;
-  padding: 5px 10px;
-  border: 1px solid #e8e8e8;
-  border-radius: 5px;
-}
-.custom-error {
-  color: #dc3545;
-  border-color: #dc3545;
-}
-.custom-success {
-  color: #28a745;
-  border-color: #28a745;
-}
-
-.reserve {
-  width: 173px;
-  height: 36px;
-  background: #448899;
-  border-radius: 5px;
-  border: 0;
-  color: #ffffff;
-  font-family: "Noto Sans TC", sans-serif;
-  font-size: 19px;
-  cursor: not-allowed;
-  opacity: 0.65;
 }
 
 footer {
   width: 100%;
-  height: 104px;
+  height: 65vh;
   background-color: #757575;
   display: grid;
   justify-content: center;
@@ -288,7 +196,7 @@ footer {
     padding-right: 10px;
   }
 
-  article {
+  main {
     width: 100%;
     margin: auto;
     min-height: calc(100vh - 54px - 104px);
@@ -309,7 +217,7 @@ footer {
     margin: 0;
     padding-right: 10px;
   }
-  article {
+  main {
     width: 100vw;
     padding: 54px 0 104px;
   }

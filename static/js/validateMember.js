@@ -10,6 +10,7 @@ const signupPassword = document.querySelector("#signup__password");
 const popupText = document.getElementsByClassName("member__text");
 const bookingButton = document.querySelector(".hgroup-title-1 a");
 const userName = document.querySelector(".welcome__text");
+const show_pw_btn = document.querySelectorAll(".show__password");
 
 // 驗證 cookie
 document.addEventListener("DOMContentLoaded", () => {
@@ -169,5 +170,21 @@ document.querySelectorAll(".member__close").forEach((element) => {
     signup.style.display = "none";
     member.style.display = "none";
     document.querySelector(".dark").style.display = "none";
+  });
+});
+
+// 點擊眼睛顯示密碼
+show_pw_btn.forEach((element) => {
+  element.addEventListener("mousedown", () => {
+    signupPassword.type = "text";
+    signinPassword.type = "text";
+
+    element.querySelector("img").src = "/static/img/eye_open.svg";
+  });
+  element.addEventListener("mouseup", () => {
+    signupPassword.type = "password";
+    signinPassword.type = "password";
+
+    element.querySelector("img").src = "/static/img/eye_closed.svg";
   });
 });
