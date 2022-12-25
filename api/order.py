@@ -66,7 +66,7 @@ def order_post():
         time = datetime.datetime.now().strftime("%Y%m%d%H%M")
         order_number = f"{time}{order_end_number:04}"
         result = Order.post(json_data["status"], decoded_jwt["id"], order_number, orderid,
-                            data["contact"]["phone"], data["contact"]["name"], data["contact"]["email"])
+                            data["contact"]["name"], data["contact"]["email"], data["contact"]["phone"])
         order_end_number += 1
         if result:
             return {
@@ -77,10 +77,12 @@ def order_post():
                         "message": "付款成功"}
                 }
             }
+        elif result == False:
+            return {"error": True,
+                    "message": "伺服器內部錯誤"}, 500
     except jwt.exceptions.DecodeError:
         return {"error": True,
                 "message": "未登入系統，拒絕存取"}, 403
     except Exception as e:
-        print(e)
         return {"error": True,
                 "message": "伺服器內部錯誤"}, 500

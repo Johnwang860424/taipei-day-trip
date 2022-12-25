@@ -220,7 +220,7 @@ function bookingContent(response) {
             .then((data) => {
               if (data.data.payment.status == 0) {
                 location.href = `/thankyou?ordernumber=${data.data.number}`;
-              } else {
+              } else if (data.data.payment.status != 0) {
                 const errorMessage = document.querySelector(".signin");
                 const darkBackground = document.querySelector(".dark");
                 errorMessage.style.minHeight =

@@ -22,7 +22,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (userName) {
           userName.textContent = `您好，${res.data.name}，待預訂的行程如下：`;
         }
-      } else if (res.data === null && location.pathname === "/booking") {
+      } else if (
+        (res.data === null && location.pathname === "/booking") ||
+        (res.data === null && location.pathname === "/thankyou")
+      ) {
         location.href = "/";
       } else if (res.data === null) {
         loginButton.textContent = "登入/註冊";
@@ -121,7 +124,10 @@ function login() {
     })
       .then((response) => response.json())
       .then((res) => {
-        if (res.ok && location.pathname === "/booking") {
+        if (
+          (res.ok && location.pathname === "/booking") ||
+          (res.ok && location.pathname === "/thankyou")
+        ) {
           location.href = "/";
         } else if (res.ok) {
           loginButton.textContent = "登入/註冊";
