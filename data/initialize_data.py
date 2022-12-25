@@ -27,7 +27,7 @@ cursor.execute("""CREATE TABLE
                                           description VARCHAR(5100),
                                           address VARCHAR(90),
                                           transport VARCHAR(1100),
-                                          mrt VARCHAR(20),
+                                          mrt VARCHAR(20) NOT NULL,
                                           lat DECIMAL(8,6),
                                           lng DECIMAL(9,6));""")
 cursor.execute("""CREATE TABLE

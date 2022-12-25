@@ -244,6 +244,30 @@ function bookingContent(response) {
                   });
                 document.querySelector(".error__message").textContent =
                   data.data.payment.message;
+              } else {
+                const errorMessage = document.querySelector(".signin");
+                const darkBackground = document.querySelector(".dark");
+                errorMessage.style.minHeight =
+                  errorMessage.parentElement.style.minHeight = "fit-content";
+                errorMessage.textContent = "";
+                errorMessage.style.display = "flex";
+                errorMessage.style.margin = "15% auto 0 auto";
+                darkBackground.style.display = "block";
+                const content = `<div class="member__title">
+                                訂購失敗
+                                  <img class="member__close" src="static/img/icon_close.svg" />
+                               </div>
+                               <div class="error__message"></div>
+                               `;
+                errorMessage.insertAdjacentHTML("afterbegin", content);
+                document
+                  .querySelector(".member__close")
+                  .addEventListener("click", () => {
+                    errorMessage.style.display = "none";
+                    darkBackground.style.display = "none";
+                  });
+                document.querySelector(".error__message").textContent =
+                  "請確認信用卡號是否輸入正確";
               }
             });
         } catch (error) {

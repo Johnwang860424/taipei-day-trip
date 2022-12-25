@@ -187,7 +187,20 @@ show_pw_btn.forEach((element) => {
 
     element.querySelector("img").src = "/static/img/eye_open.svg";
   });
+  element.addEventListener("touchstart", () => {
+    signupPassword.type = "text";
+    signinPassword.type = "text";
+
+    element.querySelector("img").src = "/static/img/eye_open.svg";
+  });
+
   element.addEventListener("mouseup", () => {
+    signupPassword.type = "password";
+    signinPassword.type = "password";
+
+    element.querySelector("img").src = "/static/img/eye_closed.svg";
+  });
+  element.addEventListener("touchend", () => {
     signupPassword.type = "password";
     signinPassword.type = "password";
 

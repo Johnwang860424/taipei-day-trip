@@ -68,7 +68,7 @@ def order_post():
         result = Order.post(json_data["status"], decoded_jwt["id"], order_number, orderid,
                             data["contact"]["name"], data["contact"]["email"], data["contact"]["phone"])
         order_end_number += 1
-        if result:
+        if result > 0:
             return {
                 "data": {
                     "number": order_number,
@@ -80,6 +80,8 @@ def order_post():
         elif result == False:
             return {"error": True,
                     "message": "伺服器內部錯誤"}, 500
+        return {"error": True,
+                "message": "訂購失敗"}, 400
     except jwt.exceptions.DecodeError:
         return {"error": True,
                 "message": "未登入系統，拒絕存取"}, 403
