@@ -1,6 +1,5 @@
 from data import connection
 
-
 class Order:
     def get():
         pass
