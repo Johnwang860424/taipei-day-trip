@@ -21,16 +21,16 @@ def attraction():
             return {
                     "nextPage": next_page,
                                 "data": [{
-                                "id": result[item][0],
-                                "name": result[item][1],
-                                "category": result[item][2],
-                                "description": result[item][3],
-                                "address": result[item][4],
-                                "transport": result[item][5],
-                                "mrt": result[item][6],
-                                "lat": result[item][7],
-                                "lng": result[item][8],
-                                "images": result[item][9].split(',')
+                                "id": result[item]["id"],
+                                "name": result[item]["name"],
+                                "category": result[item]["category"],
+                                "description": result[item]["description"],
+                                "address": result[item]["address"],
+                                "transport": result[item]["transport"],
+                                "mrt": result[item]["mrt"],
+                                "lat": result[item]["lat"],
+                                "lng": result[item]["lng"],
+                                "images": result[item]["images"].split(',')
                                 } for item in range(length)]
                 }        
         elif not result:
@@ -51,16 +51,16 @@ def attraction():
             return {
                     "nextPage": next_page,
                                 "data": [{
-                                "id": result[item][0],
-                                "name": result[item][1],
-                                "category": result[item][2],
-                                "description": result[item][3],
-                                "address": result[item][4],
-                                "transport": result[item][5],
-                                "mrt": result[item][6],
-                                "lat": result[item][7],
-                                "lng": result[item][8],
-                                "images": result[item][9].split(",")
+                                "id": result[item]["id"],
+                                "name": result[item]["name"],
+                                "category": result[item]["category"],
+                                "description": result[item]["description"],
+                                "address": result[item]["address"],
+                                "transport": result[item]["transport"],
+                                "mrt": result[item]["mrt"],
+                                "lat": result[item]["lat"],
+                                "lng": result[item]["lng"],
+                                "images": result[item]["images"].split(",")
                                 } for item in range(length)]
                 }
     return {"error": True,
@@ -74,20 +74,20 @@ def tourist_spots(attractionId):
                         "message": "Can not input string"}), 400
     result = Attraction.get_attraction_by_id(attractionId)
     if result:
-        if result[0][0] == None:
+        if result[0]["id"] == None:
             return {"error": True,
                     "message": "non-existent id"}, 500
         return {"data": {
-                "id": result[0][0],
-                "name": result[0][1],
-                "category": result[0][2],
-                "description": result[0][3],
-                "address": result[0][4],
-                "transport": result[0][5],
-                "mrt": result[0][6],
-                "lat": result[0][7],
-                "lng": result[0][8],
-                "images": result[0][9].split(",")}}
+                "id": result[0]["id"],
+                "name": result[0]["name"],
+                "category": result[0]["category"],
+                "description": result[0]["description"],
+                "address": result[0]["address"],
+                "transport": result[0]["transport"],
+                "mrt": result[0]["mrt"],
+                "lat": result[0]["lat"],
+                "lng": result[0]["lng"],
+                "images": result[0]["images"].split(",")}}
     return {"error": True,
             "message": "Unexpected Error"}, 500
     
@@ -97,7 +97,7 @@ def category():
     if not request.query_string:
         result = Category.get_category()
         if result:
-            return {"data": [name[0] for name in result]}
+            return {"data": [name["category"] for name in result]}
         return jsonify({"error": True,
                         "message": "Unexpected Error"}), 500
     elif request.query_string:
