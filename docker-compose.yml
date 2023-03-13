@@ -1,0 +1,18 @@
+version: "3"
+services:
+  db:
+    build: ./mysql/
+    restart: always
+    ports:
+      - "3306:3306"
+    env_file:
+      - .env
+  app:
+    build: ./flask/
+    depends_on:
+      - db
+    env_file:
+      - .env
+    ports:
+      - "5000:5000"
+    command: sh -c "sleep 10s; python3 app.py"

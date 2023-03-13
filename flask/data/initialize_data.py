@@ -7,10 +7,10 @@ from pathlib import Path
 
 load_dotenv()
 
-connection = mysql.connector.connect(user="root",
-                                     password=os.getenv("PASSWORD"),
-                                     host="localhost",
-                                     port="3306")
+connection = mysql.connector.connect(user=os.getenv("DB_USER"),
+                                     password=os.getenv("DB_PASSWORD"),
+                                     host=os.getenv("DB_HOST"),
+                                     port=os.getenv("DB_PORT"))
 
 cursor = connection.cursor()
 check = cursor.execute("CREATE DATABASE IF NOT EXISTS taipei_day_trip;")
