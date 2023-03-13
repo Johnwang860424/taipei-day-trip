@@ -186,7 +186,13 @@ function bookingContent(response) {
     tappaySetup();
     document.querySelector("form").addEventListener("submit", function (event) {
       event.preventDefault();
-
+      const loading = `<div class="lds-ring">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                      </div>`;
+      container.insertAdjacentHTML("beforeend", loading);
       forceBlurIos();
 
       // 取得 TapPay Fields 的 status
