@@ -34,4 +34,4 @@ if __name__ == '__main__':
     app.register_blueprint(api.member.member)
     app.register_blueprint(api.booking.booking)
     app.register_blueprint(api.order.order)
-    app.run(host="0.0.0.0", port=3000)
+    app.run(host="0.0.0.0", port=5000)
