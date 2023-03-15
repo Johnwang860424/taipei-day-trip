@@ -157,7 +157,6 @@ CREATE TABLE `member` (
 
 LOCK TABLES `member` WRITE;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
-INSERT INTO `member` VALUES (2,'ting','shu@shu.com','pbkdf2:sha256:260000$S5q8rejsvmpzpuWR$9435bd1915da4ce2fa65cffbea72a5f9ad530d23bafdd9b79c0cc55cc541d9b9'),(4,'test','test@test.com','pbkdf2:sha256:260000$qV2qRUOaMYAuY29B$d254011940445fa1f6e632e571dabaee4e48de958acad2f6394129455a769eba'),(6,'test','test1@test.com','pbkdf2:sha256:260000$uTw3hHT5jquPlaCQ$73292aa26fda319075a34c465456dd3f4edd78c5ad6a6e343913575ff0fd5c46');
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
 
