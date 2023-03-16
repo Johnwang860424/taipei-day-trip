@@ -83,12 +83,12 @@ Test Card:
 ![image](architecture.png)
 
 ## :point_down:Database Schema
-  
-![image](MySQL.png)  
+
+![image](MySQL.png)
 
 ## :point_down:Contact
 
-👩‍💻Wei-Han, Wang
+👨‍💻Wei-Han, Wang
 <br/>
 
 :email:Email: s13602507586@gmail.com
